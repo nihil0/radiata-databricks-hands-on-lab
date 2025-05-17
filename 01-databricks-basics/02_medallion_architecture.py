@@ -31,7 +31,6 @@ VOLUME_PATH = ""
 # MAGIC ## Step 2: Load Raw Data (Bronze Layer)
 # MAGIC
 # MAGIC The raw Delta data is stored in a Volume.
-# MAGIC
 
 # COMMAND ----------
 
@@ -39,7 +38,6 @@ VOLUME_PATH = ""
 # MAGIC ## Step 3: Transform to Silver Table
 # MAGIC
 # MAGIC Clean the data (e.g., type casting `HIRE_DATE`, `SALARY`, and handling nulls). Note that there are a lot of repeated rows since there hasn't been much changing between the datasets. It is up to you if you want to store only the latest version of the record or the history. Then write it as a **managed Delta table** in your schema.
-# MAGIC
 
 # COMMAND ----------
 
