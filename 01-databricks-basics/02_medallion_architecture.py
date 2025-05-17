@@ -11,6 +11,12 @@
 # MAGIC   - Headcount per manager
 # MAGIC
 # MAGIC You will perform these operations in **Unity Catalog** in SQL. You may also use Python or a combination of the two. 
+# MAGIC
+# MAGIC **Note to trainer**: Copy the data in the `data/` directory into a volume to which all users have read access
+
+# COMMAND ----------
+
+VOLUME_PATH = ""
 
 # COMMAND ----------
 
@@ -24,19 +30,14 @@
 # MAGIC %md
 # MAGIC ## Step 2: Load Raw Data (Bronze Layer)
 # MAGIC
-# MAGIC The raw Delta data is stored in a Volume:
-# MAGIC
-# MAGIC ```
-# MAGIC /Volumes/main/default/delta_lake_demo/bronze/employees
-# MAGIC ```
+# MAGIC The raw Delta data is stored in a Volume.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Step 3: Transform to Silver Table
 # MAGIC
-# MAGIC Clean the data (e.g., type casting `HIRE_DATE`, `SALARY`, and handling nulls).  
-# MAGIC Then write it as a **managed Delta table** in your schema.
+# MAGIC Clean the data (e.g., type casting `HIRE_DATE`, `SALARY`, and handling nulls). Note that there are a lot of repeated rows since there hasn't been much changing between the datasets. It is up to you if you want to store only the latest version of the record or the history. Then write it as a **managed Delta table** in your schema.
 
 # COMMAND ----------
 
