@@ -20,12 +20,9 @@ mlflow.set_registry_uri("databricks-uc")
 
 
 # TODO set these variables
-catalog = "dev_sandbox"
-schema = "neelabhkashyap"
-model = "ElasticNetDiabetes"
-
-
-
+catalog = ""
+schema = ""
+model = ""
 
 # COMMAND ----------
 
@@ -35,7 +32,7 @@ from sklearn.datasets import load_diabetes
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-model_uri = f"models:/dev_sandbox.neelabhkashyap.elasticnetdiabetes@latest"
+model_uri = f"models:/{catalog}.{schema}.{model}@latest"
 
 # Load the diabetes dataset
 diabetes = load_diabetes(as_frame=True)
