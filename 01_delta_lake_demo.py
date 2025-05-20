@@ -16,11 +16,19 @@
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC
+# MAGIC create catalog tester;
+# MAGIC create schema tester.training_common;
+# MAGIC create volume tester.training_common.data;
+
+# COMMAND ----------
+
 # Enter the values for your environment here
-catalog = "common"
-schema = "shared"
-volume_name = "shared"
-volume_path = f"/Volumes/{catalog}/{schema}/{volume_name}/delta_lake_demo"
+catalog = "tester"
+schema = "training_common"
+volume_name = "data"
+volume_path = f"/Volumes/{catalog}/{schema}/{volume_name}/delta_lake_demo_neelabhk"
 
 def show_query_results(q: str) -> None:
   display(spark.sql(q))
@@ -46,6 +54,10 @@ df.write.format("delta").mode("overwrite").save(volume_path)
 
 # COMMAND ----------
 
+volume_path
+
+# COMMAND ----------
+
 q = f"select * from delta.`{volume_path}`"
 
 show_query_results(q)
@@ -53,7 +65,7 @@ show_query_results(q)
 # COMMAND ----------
 
 q = f"""
--- Insert a new row
+-- updating a row
 UPDATE delta.`{volume_path}`
 SET name = 'Robert'
 WHERE id = 2
@@ -63,9 +75,13 @@ show_query_results(q)
 
 # COMMAND ----------
 
+
+
+# COMMAND ----------
+
 q = f"""
 -- update an existing row
-INSERT INTO delta.`/Volumes/common/shared/shared/delta_lake_demo` (id, name)
+INSERT INTO delta.`{volume_path}` (id, name)
 VALUES (3, 'Catherine')
 """
 
@@ -94,14 +110,14 @@ show_query_results(q)
 # COMMAND ----------
 
 # Try reading a specific version
-q = f"select * from delta.`{volume_path}` version as of ****"
+q = f"select * from delta.`{volume_path}` version as of 0"
 
 show_query_results(q)
 
 # COMMAND ----------
 
 # try reading a specific point in time
-q = f"select * from delta.`{volume_path}` timestamp as of '2025-05-07 20:00:00'"
+q = f"select * from delta.`{volume_path}` timestamp as of '2025-05-20 08:05:00'"
 
 show_query_results(q)
 
@@ -121,6 +137,10 @@ try:
 except AnalysisException as e:
     print("Schema enforcement caught an error:", e)
 
+
+
+# COMMAND ----------
+
 # Schema Evolution: adding a column
 new_schema_df = spark.createDataFrame([Row(id=6, name="Leo", country="US")])
 new_schema_df.write.option("mergeSchema", "true").format("delta").mode("append").save(volume_path)
@@ -129,6 +149,10 @@ new_schema_df.write.option("mergeSchema", "true").format("delta").mode("append")
 
 # Show final schema
 spark.read.format("delta").load(volume_path).printSchema()
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
